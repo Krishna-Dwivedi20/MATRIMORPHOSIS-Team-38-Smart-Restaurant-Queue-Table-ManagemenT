@@ -1,0 +1,162 @@
+/* ================================
+   Global Reset & Typography
+================================ */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: 'Segoe UI', 'Inter', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  background: linear-gradient(135deg, #f7f9fc 0%, #f0f4f8 100%);
+  color: #111827;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  min-height: 100vh;
+}
+
+/* ================================
+   Typography Hierarchy
+================================ */
+
+h1 {
+  font-size: 48px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  margin-bottom: 0.5rem;
+  background: linear-gradient(135deg, #4F46E5 0%, #7C3AED 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+h2 {
+  font-size: 32px;
+  font-weight: 700;
+  letter-spacing: -0.015em;
+  margin-bottom: 1rem;
+  color: #1F2937;
+}
+
+h3 {
+  font-size: 24px;
+  font-weight: 600;
+  color: #374151;
+}
+
+p {
+  font-size: 16px;
+  line-height: 1.6;
+  color: #6B7280;
+}
+
+/* ================================
+   Layout Helpers (Commercial Feel)
+================================ */
+
+.page {
+  padding: 32px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.section {
+  margin-bottom: 40px;
+}
+
+/* ================================
+   Material Component Enhancements
+================================ */
+
+mat-card {
+  border-radius: 14px !important;
+}
+
+button,
+.mat-button,
+.mat-raised-button {
+  font-weight: 500;
+  border-radius: 10px;
+}
+
+/* ================================
+   Subtle Motion (Premium Feel)
+================================ */
+
+mat-card,
+button {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+mat-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 20px 40px rgba(79, 70, 229, 0.1) !important;
+}
+
+button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1) !important;
+}
+
+button:active {
+  transform: translateY(0);
+}
+/* ================================
+   Brand Color Tokens (CSS-based)
+================================ */
+
+:root {
+  --brand-primary: #4F46E5; /* Indigo */
+  --brand-accent: #22C55E;  /* Green */
+  --brand-da: linear-gradient(135deg, var(--brand-primary) 0%, #7C3AED 100%) !important;
+  box-shadow: 0 4px 15px rgba(79, 70, 229, 0.4) !important;
+}
+
+.mat-mdc-raised-button.mat-accent {
+  background: linear-gradient(135deg, var(--brand-accent) 0%, #16A34A 100%) !important;
+  box-shadow: 0 4px 15px rgba(34, 197, 94, 0.4) !important;
+}
+
+.mat-mdc-raised-button.mat-warn {
+  background: linear-gradient(135deg, var(--brand-danger) 0%, #DC2626 100%) !important;
+  box-shadow: 0 4px 15px rgba(239, 68, 68, 0.4) !important;
+}
+
+.mat-mdc-card {
+  background-color: var(--brand-card);
+  border-radius: 16px !important;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+/* ================================
+   Enhanced Components
+================================ */
+
+mat-toolbar {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08) !important;
+  background: linear-gradient(135deg, var(--brand-primary) 0%, #7C3AED 100%) !important;
+}
+
+.mat-mdc-button, .mat-mdc-raised-button {
+  border-radius: 10px !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.5px
+.mat-mdc-raised-button.mat-accent {
+  background-color: var(--brand-accent) !important;
+}
+
+.mat-mdc-raised-button.mat-warn {
+  background-color: var(--brand-danger) !important;
+}
+
+.mat-mdc-card {
+  background-color: var(--brand-card);
+}

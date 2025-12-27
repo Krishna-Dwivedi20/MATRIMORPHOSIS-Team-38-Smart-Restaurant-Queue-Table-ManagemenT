@@ -1,0 +1,80 @@
+<footer class="app-footer">
+  <div class="footer-content">
+    <!-- Brand Section -->
+    <section class="footer-section brand-section">
+      <div class="brand-info">
+        <h3 class="brand-name">🍽️ SmartRestaurant</h3>
+        <p class="brand-description">
+          Modern restaurant management system designed to streamline operations
+          and enhance the dining experience for guests and staff alike.
+        </p>
+        <div class="social-links">
+          <a *ngFor="let social of socialLinks" [href]="social.url" class="social-link" [title]="social.label">
+            <span class="social-icon">{{ social.icon }}</span>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Navigation Links -->
+    <section class="footer-section">
+      <h4 class="section-title">Navigation</h4>
+      <ul class="link-list">
+        <li *ngFor="let link of navigationLinks">
+          <a [routerLink]="link.route" class="footer-link">{{ link.label }}</a>
+        </li>
+      </ul>
+    </section>
+
+    <!-- Support Links -->
+    <section class="footer-section">
+      <h4 class="section-title">Support</h4>
+      <ul class="link-list">
+        <li *ngFor="let link of supportLinks">
+          <a [href]="link.route" class="footer-link">{{ link.label }}</a>
+        </li>
+      </ul>
+    </section>
+
+    <!-- Contact Section -->
+    <section class="footer-section">
+      <h4 class="section-title">Contact</h4>
+      <div class="contact-info">
+        <div class="contact-item">
+          <span class="contact-icon">📍</span>
+          <p>123 Restaurant Ave<br>Food City, FC 12345</p>
+        </div>
+        <div class="contact-item">
+          <span class="contact-icon">📞</span>
+          <p>+1 (555) 123-4567</p>
+        </div>
+        <div class="contact-item">
+          <span class="contact-icon">📧</span>
+          <p>info@smartrestaurant.com</p>
+        </div>
+        <div class="contact-item">
+          <span class="contact-icon">🕐</span>
+          <p>Mon - Sun: 10 AM - 11 PM</p>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- Bottom Bar -->
+  <div class="footer-bottom">
+    <div class="bottom-content">
+      <div class="copyright">
+        <p>&copy; {{ currentYear }} SmartRestaurant. All rights reserved.</p>
+      </div>
+      <div class="legal-links">
+        <a *ngFor="let link of legalLinks; let last = last" [href]="link.route" class="legal-link">
+          {{ link.label }}
+          <span *ngIf="!last" class="divider">•</span>
+        </a>
+      </div>
+      <div class="version">
+        <p>v1.0.0</p>
+      </div>
+    </div>
+  </div>
+</footer>

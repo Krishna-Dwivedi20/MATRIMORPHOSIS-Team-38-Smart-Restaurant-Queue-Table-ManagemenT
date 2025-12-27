@@ -1,0 +1,87 @@
+<div class="reservation-page">
+  <section class="page-header">
+    <h1>📅 Make a Reservation</h1>
+    <p>Reserve your table in advance and enjoy a seamless dining experience</p>
+  </section>
+
+  <div class="reservation-content">
+    <mat-card class="reservation-card">
+      <div class="reservation-illustration">
+        <div class="illustration-icon">📋</div>
+      </div>
+
+      <mat-card-content>
+        <h2>Book Your Table</h2>
+        <p class="subtitle">
+          Plan ahead and ensure your perfect table is waiting for you.
+        </p>
+
+        <form class="reservation-form">
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Full Name</mat-label>
+            <input matInput placeholder="John Doe">
+            <mat-icon matPrefix>👤</mat-icon>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Email Address</mat-label>
+            <input matInput type="email" placeholder="john@example.com">
+            <mat-icon matPrefix>📧</mat-icon>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Phone Number</mat-label>
+            <input matInput placeholder="+1 (555) 123-4567">
+            <mat-icon matPrefix>📱</mat-icon>
+          </mat-form-field>
+
+          <div class="form-row">
+            <mat-form-field appearance="outline" class="form-col">
+              <mat-label>Date</mat-label>
+              <input matInput type="date">
+              <mat-icon matPrefix>📅</mat-icon>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="form-col">
+              <mat-label>Time</mat-label>
+              <input matInput type="time">
+              <mat-icon matPrefix>⏰</mat-icon>
+            </mat-form-field>
+          </div>
+
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Number of Guests</mat-label>
+            <input matInput type="number" placeholder="4" min="1" max="12">
+            <mat-icon matPrefix>👥</mat-icon>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Special Requests</mat-label>
+            <textarea matInput rows="4" placeholder="Any special occasions, dietary restrictions, or preferences?"></textarea>
+            <mat-icon matPrefix>📝</mat-icon>
+          </mat-form-field>
+
+          <div class="form-actions">
+            <button mat-raised-button color="primary" class="submit-btn">
+              ✓ Confirm Reservation
+            </button>
+            <button mat-stroked-button class="cancel-btn">
+              ✕ Clear Form
+            </button>
+          </div>
+        </form>
+
+        <div class="benefits">
+          <h3>Why Book in Advance?</h3>
+          <ul class="benefits-list">
+            <li><span class="check">✓</span> Guaranteed table availability</li>
+            <li><span class="check">✓</span> Priority seating location</li>
+            <li><span class="check">✓</span> Special preparations for celebrations</li>
+            <li><span class="check">✓</span> No waiting time</li>
+          </ul>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>
+

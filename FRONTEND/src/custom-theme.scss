@@ -1,0 +1,24 @@
+@use '@angular/material' as mat;
+
+/* Angular Material 3 — System Theme */
+html {
+  @include mat.theme((
+    color: (
+      primary: #4F46E5,
+      tertiary: #22C55E,
+      error: #EF4444,
+    ),
+    typography: (
+      brand-family: 'Inter',
+      plain-family: 'Inter',
+    ),
+    density: 0,
+  ));
+}
+
+/* App background + text */
+body {
+  margin: 0;
+  background-color: #f7f9fc;
+  color: #111827;
+}

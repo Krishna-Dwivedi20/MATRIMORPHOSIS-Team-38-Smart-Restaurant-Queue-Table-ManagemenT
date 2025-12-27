@@ -1,0 +1,37 @@
+<div class="tables-page">
+
+  <section class="page-header">
+    <h1>🍽️ Table Availability</h1>
+    <p>Real-time view of all restaurant tables</p>
+  </section>
+
+  <div *ngIf="loading" class="loading-state">
+    <div class="spinner"></div>
+    <p>Loading table information...</p>
+  </div>
+
+  <div *ngIf="!loading" class="table-grid">
+    <mat-card
+      *ngFor="let table of tables"
+      class="table-card"
+      [ngClass]="'status-' + table.status.toLowerCase()"
+    >
+      <div class="table-icon">🍽️</div>
+      <mat-card-title>Table #{{ table.id }}</mat-card-title>
+      <mat-card-content>
+        <div class="table-info">
+          <div class="status-badge" [ngClass]="'badge-' + table.status.toLowerCase()">
+            {{ table.status }}
+          </div>
+          <p *ngIf="table.current_customer_id" class="customer-info">
+            <strong>Guest ID:</strong> {{ table.current_customer_id }}
+          </p>
+          <p *ngIf="!table.current_customer_id" class="status-text">
+            Ready for guests
+          </p>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+
+</div>

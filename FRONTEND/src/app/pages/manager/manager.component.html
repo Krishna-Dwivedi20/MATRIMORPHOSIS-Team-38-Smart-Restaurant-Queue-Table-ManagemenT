@@ -1,0 +1,77 @@
+<div class="manager-page">
+  <section class="page-header">
+    <h1>🧑‍💼 Manager Control Panel</h1>
+    <p>Manage seating and customer flow in real-time</p>
+  </section>
+
+  <div class="manager-content">
+    <div class="control-grid">
+      <mat-card class="control-card seating-card">
+        <div class="card-icon">👥</div>
+        <mat-card-title>Seat Next Customer</mat-card-title>
+        <mat-card-content>
+          <p class="card-description">
+            Move the next customer from the queue to an available table
+          </p>
+        </mat-card-content>
+        <div class="card-actions">
+          <button
+            mat-raised-button
+            color="accent"
+            (click)="seatNextCustomer()"
+            [disabled]="loading"
+            class="action-btn"
+          >
+            <span *ngIf="!loading">✓ Seat Now</span>
+            <span *ngIf="loading">⏳ Processing...</span>
+          </button>
+        </div>
+      </mat-card>
+
+      <mat-card class="control-card stats-card">
+        <div class="card-icon">📊</div>
+        <mat-card-title>Queue Status</mat-card-title>
+        <mat-card-content>
+          <p class="stat-label">Current Queue Size</p>
+          <p class="stat-number">0</p>
+          <p class="stat-description">Customers waiting</p>
+        </mat-card-content>
+      </mat-card>
+
+      <mat-card class="control-card tables-card">
+        <div class="card-icon">🍽️</div>
+        <mat-card-title>Table Status</mat-card-title>
+        <mat-card-content>
+          <p class="stat-label">Available Tables</p>
+          <p class="stat-number">--</p>
+          <p class="stat-description">Ready for guests</p>
+        </mat-card-content>
+      </mat-card>
+    </div>
+
+    <mat-card class="full-card operations-card">
+      <mat-card-title>Quick Actions</mat-card-title>
+      <mat-card-content>
+        <p class="section-description">Common management tasks</p>
+        <div class="action-grid">
+          <button mat-raised-button color="primary" class="action-item">
+            <span class="action-icon">🔄</span>
+            <span class="action-label">Refresh Status</span>
+          </button>
+          <button mat-raised-button color="primary" class="action-item">
+            <span class="action-icon">📋</span>
+            <span class="action-label">View Queue</span>
+          </button>
+          <button mat-raised-button color="primary" class="action-item">
+            <span class="action-icon">🗺️</span>
+            <span class="action-label">View Tables</span>
+          </button>
+          <button mat-raised-button color="primary" class="action-item">
+            <span class="action-icon">⚙️</span>
+            <span class="action-label">Settings</span>
+          </button>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>

@@ -1,0 +1,48 @@
+<div class="queue-page">
+  <section class="page-header">
+    <h1>⏳ Waiting Queue</h1>
+    <p>Join our queue and get notified when your table is ready</p>
+  </section>
+
+  <div class="queue-content">
+    <mat-card class="queue-card">
+      <div class="queue-illustration">
+        <div class="queue-icon">👥</div>
+      </div>
+
+      <mat-card-content>
+        <h2>Join the Queue</h2>
+        <p class="description">
+          Get in line and we'll notify you when a table becomes available for your party.
+        </p>
+
+        <div class="features">
+          <div class="feature-item">
+            <span class="feature-icon">⚡</span>
+            <span class="feature-text">Real-time Updates</span>
+          </div>
+          <div class="feature-item">
+            <span class="feature-icon">📱</span>
+            <span class="feature-text">Mobile Friendly</span>
+          </div>
+          <div class="feature-item">
+            <span class="feature-icon">⏱️</span>
+            <span class="feature-text">See Wait Time</span>
+          </div>
+        </div>
+      </mat-card-content>
+
+      <div class="action-buttons">
+        <button
+          mat-raised-button
+          color="primary"
+          (click)="joinQueue()"
+          [disabled]="loading"
+          class="join-btn"
+        >
+          {{ loading ? '⏳ Joining...' : '✓ Join Queue' }}
+        </button>
+      </div>
+    </mat-card>
+  </div>
+</div>
