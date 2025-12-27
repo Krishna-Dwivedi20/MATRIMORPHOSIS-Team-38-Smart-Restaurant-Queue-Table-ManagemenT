@@ -42,15 +42,21 @@
       <div class="contact-info">
         <div class="contact-item">
           <span class="contact-icon">📍</span>
-          <p>123 Restaurant Ave<br>Food City, FC 12345</p>
+          <button class="location-button" (click)="openMap()" title="Open location in Google Maps">
+            <p>{{ restaurantLocation.address }}<br>{{ restaurantLocation.city }}, {{ restaurantLocation.state }} {{ restaurantLocation.zip }}</p>
+          </button>
         </div>
         <div class="contact-item">
           <span class="contact-icon">📞</span>
-          <p>+1 (555) 123-4567</p>
+          <a href="tel:+917521858232" class="contact-link" title="Call us">
+            +91 7521858232
+          </a>
         </div>
         <div class="contact-item">
           <span class="contact-icon">📧</span>
-          <p>info@smartrestaurant.com</p>
+          <a href="mailto:info@smartrestaurant.com" class="contact-link" title="Send us an email">
+            info@smartrestaurant.com
+          </a>
         </div>
         <div class="contact-item">
           <span class="contact-icon">🕐</span>

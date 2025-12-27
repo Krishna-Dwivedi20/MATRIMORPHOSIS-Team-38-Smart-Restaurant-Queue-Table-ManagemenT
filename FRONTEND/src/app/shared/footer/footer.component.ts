@@ -12,6 +12,14 @@ import { RouterModule } from '@angular/router';
 export class FooterComponent {
   currentYear = new Date().getFullYear();
 
+  restaurantLocation = {
+    address: '123 Restaurant Ave',
+    city: 'Food City',
+    state: 'FC',
+    zip: '12345',
+    coordinates: { lat: 40.7128, lng: -74.0060 }
+  };
+
   navigationLinks = [
     { label: 'Dashboard', route: '/' },
     { label: 'Tables', route: '/tables' },
@@ -39,4 +47,10 @@ export class FooterComponent {
     { icon: '📷', label: 'Instagram', url: '#' },
     { icon: '💼', label: 'LinkedIn', url: '#' }
   ];
+
+  openMap(): void {
+    const { address, city, state, zip, coordinates } = this.restaurantLocation;
+    const mapUrl = `https://www.google.com/maps/search/${coordinates.lat},${coordinates.lng}`;
+    window.open(mapUrl, '_blank');
+  }
 }

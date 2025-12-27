@@ -12,14 +12,14 @@ export const createTable = async (req: Request, res: Response) => {
       });
     }
 
-    const [result]: any = await db.query(
-      "INSERT INTO tables_reservations (table_number, capacity, type) VALUES (?, ?, ?)",
-      [table_number, capacity, type || "REGULAR"]
+    const stmt = db.prepare(
+      "INSERT INTO tables_reservations (table_number, capacity, type) VALUES (?, ?, ?)"
     );
+    const result = stmt.run(table_number, capacity, type || "REGULAR");
 
     return res.status(201).json({
       message: "Table created successfully",
-      tableId: result.insertId
+      tableId: result.lastInsertRowid
     });
   } catch (error: any) {
     return res.status(500).json({
@@ -31,9 +31,10 @@ export const createTable = async (req: Request, res: Response) => {
 
 export const getAllTables = async (req: Request, res: Response) => {
   try {
-    const [rows]: any = await db.query(
+    const stmt = db.prepare(
       "SELECT id, table_number, capacity, type, status FROM tables_reservations ORDER BY table_number"
     );
+    const rows = stmt.all();
 
     return res.status(200).json(rows);
   } catch (error: any) {
@@ -58,12 +59,12 @@ export const updateTableStatus = async (req: Request, res: Response) => {
       return res.status(400).json({ message: "Invalid table status" });
     }
 
-    const [result]: any = await db.query(
-      "UPDATE tables_reservations SET status = ? WHERE id = ?",
-      [status, id]
+    const stmt = db.prepare(
+      "UPDATE tables_reservations SET status = ? WHERE id = ?"
     );
+    const result = stmt.run(status, id);
 
-    if (result.affectedRows === 0) {
+    if (result.changes === 0) {
       return res.status(404).json({ message: "Table not found" });
     }
 
@@ -89,30 +90,30 @@ export const reserveTable = async (req: Request, res: Response) => {
     }
 
     // Check table availability
-    const [rows]: any = await db.query(
-      "SELECT status FROM tables_reservations WHERE id = ?",
-      [table_id]
+    const stmt = db.prepare(
+      "SELECT status FROM tables_reservations WHERE id = ?"
     );
+    const row: any = stmt.get(table_id);
 
-    if (rows.length === 0) {
+    if (!row) {
       return res.status(404).json({ message: "Table not found" });
     }
 
-    if (rows[0].status !== "AVAILABLE") {
+    if (row.status !== "AVAILABLE") {
       return res.status(400).json({
         message: "Table is not available for reservation"
       });
     }
 
     // Reserve table
-    await db.query(
+    const updateStmt = db.prepare(
       `UPDATE tables_reservations
        SET status = 'RESERVED',
            current_customer_id = ?,
            reservation_time = ?
-       WHERE id = ?`,
-      [user_id, reservation_time, table_id]
+       WHERE id = ?`
     );
+    updateStmt.run(user_id, reservation_time, table_id);
 
     return res.status(200).json({
       message: "Table reserved successfully"
@@ -131,30 +132,30 @@ export const cancelReservation = async (req: Request, res: Response) => {
     const { table_id } = req.params;
 
     // Check table state
-    const [rows]: any = await db.query(
-      "SELECT status FROM tables_reservations WHERE id = ?",
-      [table_id]
+    const stmt = db.prepare(
+      "SELECT status FROM tables_reservations WHERE id = ?"
     );
+    const row: any = stmt.get(table_id);
 
-    if (rows.length === 0) {
+    if (!row) {
       return res.status(404).json({ message: "Table not found" });
     }
 
-    if (rows[0].status !== "RESERVED") {
+    if (row.status !== "RESERVED") {
       return res.status(400).json({
         message: "Table is not reserved"
       });
     }
 
     // Cancel reservation
-    await db.query(
+    const updateStmt = db.prepare(
       `UPDATE tables_reservations
        SET status = 'AVAILABLE',
            current_customer_id = NULL,
            reservation_time = NULL
-       WHERE id = ?`,
-      [table_id]
+       WHERE id = ?`
     );
+    updateStmt.run(table_id);
 
     return res.status(200).json({
       message: "Reservation cancelled successfully"

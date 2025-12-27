@@ -1,11 +1,23 @@
-import mysql from "mysql2/promise";
+import Database from "better-sqlite3";
+import path from "path";
 
-export const db = mysql.createPool({
-  host: process.env.DB_HOST,
-  user: process.env.DB_USER,
-  password: process.env.DB_PASS,
-  database: process.env.DB_NAME,
-  waitForConnections: true,
-  connectionLimit: 10,
-  queueLimit: 0
-});
+const dbPath = path.join(process.cwd(), "restaurant.db");
+export const db = new Database(dbPath);
+
+// Enable foreign keys
+db.pragma("foreign_keys = ON");
+
+// Export a wrapper to make it compatible with mysql2/promise interface
+export const dbQuery = (sql: string, params: any[] = []) => {
+  try {
+    const stmt = db.prepare(sql);
+    if (sql.trim().toUpperCase().startsWith("SELECT")) {
+      return [stmt.all(...params)];
+    } else {
+      const result = stmt.run(...params);
+      return [{ insertId: result.lastInsertRowid, affectedRows: result.changes }];
+    }
+  } catch (error) {
+    throw error;
+  }
+};

@@ -10,39 +10,41 @@ export const joinQueue = async (req: Request, res: Response) => {
     }
 
     // Step 1: Check if any table is AVAILABLE
-    const [availableTables]: any = await db.query(
+    const availStmt = db.prepare(
       "SELECT id FROM tables_reservations WHERE status = 'AVAILABLE' LIMIT 1"
     );
+    const availTable: any = availStmt.get();
 
-    if (availableTables.length > 0) {
+    if (availTable) {
       return res.status(200).json({
         message: "Table available. No need to join queue."
       });
     }
 
     // Step 2: Get oldest RESERVED table (FIFO queue)
-    const [queueTables]: any = await db.query(
+    const queueStmt = db.prepare(
       `SELECT id FROM tables_reservations 
        WHERE status = 'RESERVED'
        ORDER BY reservation_time ASC
        LIMIT 1`
     );
+    const queueTable: any = queueStmt.get();
 
-    if (queueTables.length === 0) {
+    if (!queueTable) {
       return res.status(400).json({
         message: "No queue slot available"
       });
     }
 
-    const tableId = queueTables[0].id;
+    const tableId = queueTable.id;
 
     // Step 3: Update selected table
-    await db.query(
+    const updateStmt = db.prepare(
       `UPDATE tables_reservations
-       SET current_customer_id = ?, reservation_time = NOW()
-       WHERE id = ?`,
-      [user_id, tableId]
+       SET current_customer_id = ?, reservation_time = CURRENT_TIMESTAMP
+       WHERE id = ?`
     );
+    updateStmt.run(user_id, tableId);
 
     return res.status(200).json({
       message: "Joined queue successfully"
@@ -55,58 +57,61 @@ export const joinQueue = async (req: Request, res: Response) => {
     });
   }
 };
+
 export const seatFromQueue = async (req: Request, res: Response) => {
   try {
     // Step 1: get oldest queued customer
-    const [queued]: any = await db.query(
+    const queueStmt = db.prepare(
       `SELECT id, current_customer_id 
        FROM tables_reservations
        WHERE status = 'RESERVED'
        ORDER BY reservation_time ASC
        LIMIT 1`
     );
+    const queued: any = queueStmt.get();
 
-    if (queued.length === 0) {
+    if (!queued) {
       return res.status(400).json({
         message: "No customers in queue"
       });
     }
 
-    const queueTableId = queued[0].id;
-    const customerId = queued[0].current_customer_id;
+    const queueTableId = queued.id;
+    const customerId = queued.current_customer_id;
 
     // Step 2: find available table
-    const [available]: any = await db.query(
+    const availStmt = db.prepare(
       `SELECT id FROM tables_reservations
        WHERE status = 'AVAILABLE'
        LIMIT 1`
     );
+    const available: any = availStmt.get();
 
-    if (available.length === 0) {
+    if (!available) {
       return res.status(400).json({
         message: "No available tables"
       });
     }
 
-    const availableTableId = available[0].id;
+    const availableTableId = available.id;
 
     // Step 3: seat customer
-    await db.query(
+    const seatStmt = db.prepare(
       `UPDATE tables_reservations
        SET status = 'OCCUPIED', current_customer_id = ?
-       WHERE id = ?`,
-      [customerId, availableTableId]
+       WHERE id = ?`
     );
+    seatStmt.run(customerId, availableTableId);
 
     // Step 4: clear queue slot
-    await db.query(
+    const clearStmt = db.prepare(
       `UPDATE tables_reservations
        SET status = 'AVAILABLE',
            current_customer_id = NULL,
            reservation_time = NULL
-       WHERE id = ?`,
-      [queueTableId]
+       WHERE id = ?`
     );
+    clearStmt.run(queueTableId);
 
     return res.status(200).json({
       message: "Customer seated successfully",

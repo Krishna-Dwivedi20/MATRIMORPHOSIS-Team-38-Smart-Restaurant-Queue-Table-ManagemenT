@@ -1,77 +1,129 @@
 <div class="manager-page">
   <section class="page-header">
-    <h1>🧑‍💼 Manager Control Panel</h1>
-    <p>Manage seating and customer flow in real-time</p>
+    <div class="header-content">
+      <h1>Manager Dashboard</h1>
+      <p>Real-time control panel for restaurant operations</p>
+    </div>
   </section>
 
-  <div class="manager-content">
-    <div class="control-grid">
-      <mat-card class="control-card seating-card">
-        <div class="card-icon">👥</div>
-        <mat-card-title>Seat Next Customer</mat-card-title>
-        <mat-card-content>
-          <p class="card-description">
-            Move the next customer from the queue to an available table
-          </p>
-        </mat-card-content>
-        <div class="card-actions">
-          <button
-            mat-raised-button
-            color="accent"
-            (click)="seatNextCustomer()"
-            [disabled]="loading"
-            class="action-btn"
-          >
-            <span *ngIf="!loading">✓ Seat Now</span>
-            <span *ngIf="loading">⏳ Processing...</span>
-          </button>
-        </div>
-      </mat-card>
-
-      <mat-card class="control-card stats-card">
-        <div class="card-icon">📊</div>
-        <mat-card-title>Queue Status</mat-card-title>
-        <mat-card-content>
-          <p class="stat-label">Current Queue Size</p>
-          <p class="stat-number">0</p>
-          <p class="stat-description">Customers waiting</p>
-        </mat-card-content>
-      </mat-card>
-
-      <mat-card class="control-card tables-card">
-        <div class="card-icon">🍽️</div>
-        <mat-card-title>Table Status</mat-card-title>
-        <mat-card-content>
-          <p class="stat-label">Available Tables</p>
-          <p class="stat-number">--</p>
-          <p class="stat-description">Ready for guests</p>
-        </mat-card-content>
-      </mat-card>
+  <div class="manager-container">
+    <!-- Key Metrics -->
+    <div class="metrics-grid">
+      <div class="metric-card">
+        <div class="metric-label">Queue</div>
+        <div class="metric-value">{{ getQueueCount() }}</div>
+        <div class="metric-subtext">waiting</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">Available</div>
+        <div class="metric-value">{{ getAvailableTables() }}</div>
+        <div class="metric-subtext">tables</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">Occupied</div>
+        <div class="metric-value">{{ getOccupiedTables() }}</div>
+        <div class="metric-subtext">tables</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">Occupancy</div>
+        <div class="metric-value">{{ getOccupancyRate() }}%</div>
+        <div class="metric-subtext">rate</div>
+      </div>
     </div>
 
-    <mat-card class="full-card operations-card">
-      <mat-card-title>Quick Actions</mat-card-title>
-      <mat-card-content>
-        <p class="section-description">Common management tasks</p>
-        <div class="action-grid">
-          <button mat-raised-button color="primary" class="action-item">
-            <span class="action-icon">🔄</span>
-            <span class="action-label">Refresh Status</span>
-          </button>
-          <button mat-raised-button color="primary" class="action-item">
-            <span class="action-icon">📋</span>
-            <span class="action-label">View Queue</span>
-          </button>
-          <button mat-raised-button color="primary" class="action-item">
-            <span class="action-icon">🗺️</span>
-            <span class="action-label">View Tables</span>
-          </button>
-          <button mat-raised-button color="primary" class="action-item">
-            <span class="action-icon">⚙️</span>
-            <span class="action-label">Settings</span>
-          </button>
+    <!-- Quick Actions -->
+    <div class="quick-actions-section">
+      <div class="section-header">
+        <h2>Quick Actions</h2>
+      </div>
+      <div class="actions-grid">
+        <button class="action-card" (click)="seatNextCustomer()" [disabled]="loading">
+          <div class="action-icon">👥</div>
+          <div class="action-title">Seat Next Customer</div>
+          <div class="action-desc">Move from queue to table</div>
+        </button>
+        <button class="action-card" (click)="viewQueue()">
+          <div class="action-icon">📋</div>
+          <div class="action-title">View Queue</div>
+          <div class="action-desc">See waiting customers</div>
+        </button>
+        <button class="action-card" (click)="viewTables()">
+          <div class="action-icon">🍽️</div>
+          <div class="action-title">View Tables</div>
+          <div class="action-desc">Floor plan & status</div>
+        </button>
+        <button class="action-card" (click)="viewReservations()">
+          <div class="action-icon">📅</div>
+          <div class="action-title">Reservations</div>
+          <div class="action-desc">Manage bookings</div>
+        </button>
+      </div>
+    </div>
+
+    <!-- Dashboard Grid -->
+    <div class="dashboard-grid">
+      <!-- Queue Status -->
+      <div class="dashboard-card">
+        <div class="card-header">
+          <h3>Queue Status</h3>
         </div>
-      </mat-card-content>
-    </mat-card>
+        <div class="queue-summary">
+          <div class="summary-item">
+            <span class="summary-label">Waiting</span>
+            <span class="summary-value">{{ getQueueCount() }}</span>
+          </div>
+          <div class="summary-item">
+            <span class="summary-label">Est. Wait</span>
+            <span class="summary-value">{{ getAvgWaitTime() }} min</span>
+          </div>
+          <div class="summary-item">
+            <span class="summary-label">Longest</span>
+            <span class="summary-value">{{ getLongestWait() }} min</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Table Status -->
+      <div class="dashboard-card">
+        <div class="card-header">
+          <h3>Table Status</h3>
+        </div>
+        <div class="table-status">
+          <div class="status-row">
+            <span class="status-label">Available</span>
+            <span class="status-value available">{{ getAvailableTables() }}</span>
+          </div>
+          <div class="status-row">
+            <span class="status-label">Reserved</span>
+            <span class="status-value reserved">{{ getReservedTables() }}</span>
+          </div>
+          <div class="status-row">
+            <span class="status-label">Occupied</span>
+            <span class="status-value occupied">{{ getOccupiedTables() }}</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Operations Log -->
+      <div class="dashboard-card full-width">
+        <div class="card-header">
+          <h3>Recent Activities</h3>
+        </div>
+        <div *ngIf="recentActivities.length > 0" class="activities-list">
+          <div *ngFor="let activity of recentActivities" class="activity-item">
+            <div class="activity-icon" [ngClass]="'icon-' + activity.type">
+              {{ activity.icon }}
+            </div>
+            <div class="activity-content">
+              <div class="activity-title">{{ activity.title }}</div>
+              <div class="activity-time">{{ activity.time }}</div>
+            </div>
+          </div>
+        </div>
+        <div *ngIf="recentActivities.length === 0" class="no-activities">
+          <p>No recent activities</p>
+        </div>
+      </div>
+    </div>
   </div>
 </div>

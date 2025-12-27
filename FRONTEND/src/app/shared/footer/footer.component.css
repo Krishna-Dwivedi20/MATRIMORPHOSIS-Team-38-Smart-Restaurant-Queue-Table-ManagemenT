@@ -1,8 +1,8 @@
 .app-footer {
-  background: linear-gradient(135deg, #1F2937 0%, #111827 100%);
+  background: linear-gradient(135deg, #0D0D0D 0%, #1A1A1A 100%);
   color: #E5E7EB;
   margin-top: 80px;
-  border-top: 2px solid rgba(79, 70, 229, 0.2);
+  border-top: 2px solid #D4AF37;
 }
 
 .footer-content {
@@ -38,7 +38,7 @@
   font-size: 28px;
   font-weight: 800;
   margin-bottom: 12px;
-  background: linear-gradient(135deg, #4F46E5 0%, #7C3AED 100%);
+  background: linear-gradient(135deg, #D4AF37 0%, #F4D03F 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -63,17 +63,18 @@
   justify-content: center;
   width: 44px;
   height: 44px;
-  background: linear-gradient(135deg, rgba(79, 70, 229, 0.2) 0%, rgba(124, 58, 237, 0.2) 100%);
+  background: linear-gradient(135deg, rgba(212, 175, 55, 0.2) 0%, rgba(244, 208, 63, 0.2) 100%);
   border-radius: 12px;
-  border: 1px solid rgba(79, 70, 229, 0.3);
+  border: 1px solid rgba(212, 175, 55, 0.5);
   text-decoration: none;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
+}
 
 .social-link:hover {
-  background: linear-gradient(135deg, #4F46E5 0%, #7C3AED 100%);
+  background: linear-gradient(135deg, #D4AF37 0%, #F4D03F 100%);
   transform: translateY(-4px);
-  box-shadow: 0 12px 24px rgba(79, 70, 229, 0.3);
+  box-shadow: 0 12px 24px rgba(212, 175, 55, 0.3);
 }
 
 .social-icon {
@@ -165,6 +166,46 @@
 .contact-item p {
   margin: 0;
   line-height: 1.6;
+}
+
+.location-button {
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  color: #9CA3AF;
+  font-size: 14px;
+  transition: all 0.3s ease;
+  text-align: left;
+  font-family: inherit;
+}
+
+.location-button:hover {
+  color: #60A5FA;
+}
+
+.location-button:hover p {
+  text-decoration: underline;
+}
+
+.location-button p {
+  margin: 0;
+  line-height: 1.6;
+  transition: color 0.3s ease;
+}
+
+.contact-link {
+  color: #9CA3AF;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  line-height: 1.6;
+  margin: 0;
+}
+
+.contact-link:hover {
+  color: #60A5FA;
+  text-decoration: underline;
 }
 
 /* Footer Bottom */

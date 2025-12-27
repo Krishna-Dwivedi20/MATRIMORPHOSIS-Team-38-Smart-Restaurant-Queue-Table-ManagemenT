@@ -12,6 +12,11 @@ export class QueueService {
 
   constructor(private http: HttpClient) {}
 
+  // GET /api/queue
+  getQueue(): Observable<any> {
+    return this.http.get<any>(this.baseUrl);
+  }
+
   // POST /api/queue/join
   joinQueue(data: any): Observable<any> {
     return this.http.post<any>(

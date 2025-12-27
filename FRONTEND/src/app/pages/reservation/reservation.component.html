@@ -1,87 +1,161 @@
 <div class="reservation-page">
   <section class="page-header">
-    <h1>📅 Make a Reservation</h1>
-    <p>Reserve your table in advance and enjoy a seamless dining experience</p>
+    <div class="header-content">
+      <h1>Reservations</h1>
+      <p>Manage table reservations and bookings</p>
+    </div>
   </section>
 
-  <div class="reservation-content">
-    <mat-card class="reservation-card">
-      <div class="reservation-illustration">
-        <div class="illustration-icon">📋</div>
+  <div class="reservation-container">
+    <!-- Reservation Stats -->
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-icon book-icon">📅</div>
+        <div class="stat-info">
+          <div class="stat-label">Total Bookings</div>
+          <div class="stat-value">{{ getTotalReservations() }}</div>
+        </div>
       </div>
+      <div class="stat-card">
+        <div class="stat-icon today-icon">📆</div>
+        <div class="stat-info">
+          <div class="stat-label">Today's Bookings</div>
+          <div class="stat-value">{{ getTodayReservations() }}</div>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon pending-icon">⏳</div>
+        <div class="stat-info">
+          <div class="stat-label">Pending Confirmations</div>
+          <div class="stat-value">{{ getPendingReservations() }}</div>
+        </div>
+      </div>
+    </div>
 
-      <mat-card-content>
-        <h2>Book Your Table</h2>
-        <p class="subtitle">
-          Plan ahead and ensure your perfect table is waiting for you.
-        </p>
+    <!-- Reservation Sections -->
+    <div class="sections-wrapper">
+      <!-- Booking Form -->
+      <div class="booking-form-section">
+        <div class="section-header">
+          <h2>New Reservation</h2>
+        </div>
 
-        <form class="reservation-form">
-          <mat-form-field appearance="outline" class="full-width">
-            <mat-label>Full Name</mat-label>
-            <input matInput placeholder="John Doe">
-            <mat-icon matPrefix>👤</mat-icon>
-          </mat-form-field>
+        <form class="reservation-form" (ngSubmit)="submitReservation()">
+          <div class="form-group">
+            <label class="form-label">Full Name</label>
+            <input type="text" class="form-input" placeholder="Enter guest name" [(ngModel)]="form.name" name="name">
+          </div>
 
-          <mat-form-field appearance="outline" class="full-width">
-            <mat-label>Email Address</mat-label>
-            <input matInput type="email" placeholder="john@example.com">
-            <mat-icon matPrefix>📧</mat-icon>
-          </mat-form-field>
+          <div class="form-group">
+            <label class="form-label">Email</label>
+            <input type="email" class="form-input" placeholder="guest@example.com" [(ngModel)]="form.email" name="email">
+          </div>
 
-          <mat-form-field appearance="outline" class="full-width">
-            <mat-label>Phone Number</mat-label>
-            <input matInput placeholder="+1 (555) 123-4567">
-            <mat-icon matPrefix>📱</mat-icon>
-          </mat-form-field>
+          <div class="form-group">
+            <label class="form-label">Phone</label>
+            <input type="tel" class="form-input" placeholder="+1 (555) 123-4567" [(ngModel)]="form.phone" name="phone">
+          </div>
 
           <div class="form-row">
-            <mat-form-field appearance="outline" class="form-col">
-              <mat-label>Date</mat-label>
-              <input matInput type="date">
-              <mat-icon matPrefix>📅</mat-icon>
-            </mat-form-field>
-
-            <mat-form-field appearance="outline" class="form-col">
-              <mat-label>Time</mat-label>
-              <input matInput type="time">
-              <mat-icon matPrefix>⏰</mat-icon>
-            </mat-form-field>
+            <div class="form-group">
+              <label class="form-label">Date</label>
+              <input type="date" class="form-input" [(ngModel)]="form.date" name="date">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Time</label>
+              <input type="time" class="form-input" [(ngModel)]="form.time" name="time">
+            </div>
           </div>
 
-          <mat-form-field appearance="outline" class="full-width">
-            <mat-label>Number of Guests</mat-label>
-            <input matInput type="number" placeholder="4" min="1" max="12">
-            <mat-icon matPrefix>👥</mat-icon>
-          </mat-form-field>
-
-          <mat-form-field appearance="outline" class="full-width">
-            <mat-label>Special Requests</mat-label>
-            <textarea matInput rows="4" placeholder="Any special occasions, dietary restrictions, or preferences?"></textarea>
-            <mat-icon matPrefix>📝</mat-icon>
-          </mat-form-field>
-
-          <div class="form-actions">
-            <button mat-raised-button color="primary" class="submit-btn">
-              ✓ Confirm Reservation
-            </button>
-            <button mat-stroked-button class="cancel-btn">
-              ✕ Clear Form
-            </button>
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">Guests</label>
+              <input type="number" class="form-input" placeholder="4" min="1" max="12" [(ngModel)]="form.guests" name="guests">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Table Type</label>
+              <select class="form-input" [(ngModel)]="form.tableType" name="tableType">
+                <option value="standard">Standard</option>
+                <option value="window">Window Seat</option>
+                <option value="corner">Corner Table</option>
+              </select>
+            </div>
           </div>
+
+          <div class="form-group">
+            <label class="form-label">Special Requests</label>
+            <textarea class="form-input form-textarea" rows="3" placeholder="Any special requests or dietary restrictions..." [(ngModel)]="form.notes" name="notes"></textarea>
+          </div>
+
+          <button type="submit" class="submit-btn" [disabled]="loading">
+            {{ loading ? 'Booking...' : '+ Add Reservation' }}
+          </button>
         </form>
+      </div>
 
-        <div class="benefits">
-          <h3>Why Book in Advance?</h3>
-          <ul class="benefits-list">
-            <li><span class="check">✓</span> Guaranteed table availability</li>
-            <li><span class="check">✓</span> Priority seating location</li>
-            <li><span class="check">✓</span> Special preparations for celebrations</li>
-            <li><span class="check">✓</span> No waiting time</li>
-          </ul>
+      <!-- Reservations List -->
+      <div class="reservations-list-section">
+        <div class="section-header">
+          <h2>Upcoming Reservations</h2>
+          <button class="refresh-btn" (click)="fetchReservations()" [disabled]="loading" title="Refresh">
+            ↻
+          </button>
         </div>
-      </mat-card-content>
-    </mat-card>
+
+        <div *ngIf="loading" class="loading-state">
+          <div class="spinner"></div>
+          <p>Loading reservations</p>
+        </div>
+
+        <div *ngIf="!loading && reservationsList.length > 0" class="reservations-items">
+          <div *ngFor="let res of reservationsList" class="reservation-item">
+            <div class="reservation-header">
+              <div class="guest-info">
+                <div class="guest-name">{{ res.name }}</div>
+                <div class="guest-contact">{{ res.email }} • {{ res.phone }}</div>
+              </div>
+              <span class="status-badge" [ngClass]="'status-' + res.status.toLowerCase()">
+                {{ res.status }}
+              </span>
+            </div>
+            <div class="reservation-details">
+              <div class="detail-item">
+                <span class="detail-icon">📅</span>
+                <span class="detail-text">{{ res.date | date: 'MMM dd, yyyy' }}</span>
+              </div>
+              <div class="detail-item">
+                <span class="detail-icon">🕐</span>
+                <span class="detail-text">{{ res.time }}</span>
+              </div>
+              <div class="detail-item">
+                <span class="detail-icon">👥</span>
+                <span class="detail-text">{{ res.guests }} guests</span>
+              </div>
+              <div class="detail-item">
+                <span class="detail-icon">🍽️</span>
+                <span class="detail-text">{{ res.tableType }}</span>
+              </div>
+            </div>
+            <div class="reservation-notes" *ngIf="res.notes">
+              {{ res.notes }}
+            </div>
+            <div class="reservation-actions">
+              <button class="action-btn confirm-btn" (click)="confirmReservation(res)" *ngIf="res.status === 'Pending'">
+                ✓ Confirm
+              </button>
+              <button class="action-btn cancel-btn" (click)="cancelReservation(res)">
+                ✕ Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div *ngIf="!loading && reservationsList.length === 0" class="empty-state">
+          <div class="empty-icon">🗃️</div>
+          <p>No reservations yet</p>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
 

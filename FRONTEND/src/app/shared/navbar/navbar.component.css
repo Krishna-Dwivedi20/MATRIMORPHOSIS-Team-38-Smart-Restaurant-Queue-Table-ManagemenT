@@ -1,9 +1,9 @@
 .navbar {
-  background: linear-gradient(135deg, #4F46E5 0%, #7C3AED 100%);
+  background: linear-gradient(135deg, #0D0D0D 0%, #1A1A1A 100%);
   color: white;
   padding: 0 32px;
-  box-shadow: 0 8px 24px rgba(79, 70, 229, 0.2);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 8px 24px rgba(212, 175, 55, 0.15);
+  border-bottom: 2px solid #D4AF37;
 }
 
 .brand {
@@ -13,6 +13,7 @@
   display: flex;
   align-items: center;
   gap: 10px;
+  color: #D4AF37;
 }
 
 .brand::before {

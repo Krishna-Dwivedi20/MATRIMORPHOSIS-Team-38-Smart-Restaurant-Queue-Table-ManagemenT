@@ -9,14 +9,14 @@ export const createUser = async (req: Request, res: Response) => {
       return res.status(400).json({ message: "Name and role are required" });
     }
 
-    const [result]: any = await db.query(
-      "INSERT INTO users (name, role, contact_info) VALUES (?, ?, ?)",
-      [name, role, contact_info || null]
+    const stmt = db.prepare(
+      "INSERT INTO users (name, role, contact_info) VALUES (?, ?, ?)"
     );
+    const result = stmt.run(name, role, contact_info || null);
 
     return res.status(201).json({
       message: "User created successfully",
-      userId: result.insertId
+      userId: result.lastInsertRowid
     });
   } catch (error: any) {
     return res.status(500).json({
@@ -30,16 +30,16 @@ export const getUserById = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
 
-    const [rows]: any = await db.query(
-      "SELECT id, name, role, contact_info, created_at FROM users WHERE id = ?",
-      [id]
+    const stmt = db.prepare(
+      "SELECT id, name, role, contact_info, created_at FROM users WHERE id = ?"
     );
+    const row = stmt.get(id);
 
-    if (rows.length === 0) {
+    if (!row) {
       return res.status(404).json({ message: "User not found" });
     }
 
-    return res.status(200).json(rows[0]);
+    return res.status(200).json(row);
   } catch (error: any) {
     return res.status(500).json({
       message: "Failed to fetch user",

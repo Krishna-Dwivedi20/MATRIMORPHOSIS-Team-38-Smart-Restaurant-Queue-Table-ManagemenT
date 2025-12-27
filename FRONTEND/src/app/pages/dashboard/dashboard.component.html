@@ -55,13 +55,13 @@
       </div>
 
       <div class="hero-visual">
-        <div class="hero-illustration">
-          <div class="illustration-main">🍽️</div>
-          <div class="illustration-float item-1">👨‍💼</div>
-          <div class="illustration-float item-2">📋</div>
-          <div class="illustration-float item-3">⏳</div>
-          <div class="illustration-float item-4">✅</div>
-          <div class="illustration-float item-5">💬</div>
+        <div class="hero-image-container">
+          <img 
+            src="https://images.pexels.com/photos/262978/pexels-photo-262978.jpeg" 
+            alt="Smart Restaurant Management System"
+            class="hero-image"
+          />
+          <div class="image-overlay"></div>
         </div>
       </div>
     </div>
@@ -86,56 +86,74 @@
     </div>
   </section>
 
-  <section class="features-intro">
-    <h2>Available Features</h2>
-    <p>Choose what you need to manage</p>
+  <section class="features-section">
+    <div class="features-header">
+      <h2>Available Features</h2>
+      <p>Manage your restaurant operations efficiently with these powerful tools</p>
+    </div>
+
+    <div class="features-grid">
+
+      <div routerLink="/tables" class="feature-card tables-card">
+        <div class="card-header-top">
+          <div class="card-icon">🍽️</div>
+          <div class="card-badge available">Tables</div>
+        </div>
+        <div class="card-body">
+          <h3>Table Management</h3>
+          <p>View live table availability and current occupancy status in real-time. See which tables are available, reserved, or occupied at a glance.</p>
+        </div>
+        <div class="card-footer">
+          <span class="footer-text">Explore</span>
+          <span class="arrow">→</span>
+        </div>
+      </div>
+
+      <div routerLink="/queue" class="feature-card queue-card">
+        <div class="card-header-top">
+          <div class="card-icon">📋</div>
+          <div class="card-badge queue">Queue</div>
+        </div>
+        <div class="card-body">
+          <h3>Queue Management</h3>
+          <p>Join the waiting queue or manage customer wait times efficiently. Track queue status with estimated wait times and customer details.</p>
+        </div>
+        <div class="card-footer">
+          <span class="footer-text">Explore</span>
+          <span class="arrow">→</span>
+        </div>
+      </div>
+
+      <div routerLink="/reserve" class="feature-card reservation-card">
+        <div class="card-header-top">
+          <div class="card-icon">📅</div>
+          <div class="card-badge reserve">Reservations</div>
+        </div>
+        <div class="card-body">
+          <h3>Reservation System</h3>
+          <p>Book tables in advance and manage upcoming reservations. Confirm, modify, or cancel bookings with ease from your dashboard.</p>
+        </div>
+        <div class="card-footer">
+          <span class="footer-text">Explore</span>
+          <span class="arrow">→</span>
+        </div>
+      </div>
+
+      <div routerLink="/manager" class="feature-card manager-card">
+        <div class="card-header-top">
+          <div class="card-icon">👔</div>
+          <div class="card-badge manager">Manager</div>
+        </div>
+        <div class="card-body">
+          <h3>Manager Dashboard</h3>
+          <p>Seat customers from queue and control table assignments. Real-time operational control for efficient service delivery.</p>
+        </div>
+        <div class="card-footer">
+          <span class="footer-text">Explore</span>
+          <span class="arrow">→</span>
+        </div>
+      </div>
+
+    </div>
   </section>
-
-  <div class="card-grid">
-
-    <mat-card routerLink="/tables" class="feature-card tables-card">
-      <div class="card-icon">🍽️</div>
-      <mat-card-title>Tables</mat-card-title>
-      <mat-card-content>
-        <p>View live table availability and current occupancy status in real-time</p>
-      </mat-card-content>
-      <div class="card-footer">
-        <span class="arrow">→</span>
-      </div>
-    </mat-card>
-
-    <mat-card routerLink="/queue" class="feature-card queue-card">
-      <div class="card-icon">⏳</div>
-      <mat-card-title>Queue</mat-card-title>
-      <mat-card-content>
-        <p>Join the waiting queue or manage customer wait times efficiently</p>
-      </mat-card-content>
-      <div class="card-footer">
-        <span class="arrow">→</span>
-      </div>
-    </mat-card>
-
-    <mat-card routerLink="/reserve" class="feature-card reservation-card">
-      <div class="card-icon">📅</div>
-      <mat-card-title>Reservation</mat-card-title>
-      <mat-card-content>
-        <p>Book tables in advance and manage upcoming reservations</p>
-      </mat-card-content>
-      <div class="card-footer">
-        <span class="arrow">→</span>
-      </div>
-    </mat-card>
-
-    <mat-card routerLink="/manager" class="feature-card manager-card">
-      <div class="card-icon">🧑‍💼</div>
-      <mat-card-title>Manager Panel</mat-card-title>
-      <mat-card-content>
-        <p>Seat customers from queue and control table assignments</p>
-      </mat-card-content>
-      <div class="card-footer">
-        <span class="arrow">→</span>
-      </div>
-    </mat-card>
-
-  </div>
 </div>
