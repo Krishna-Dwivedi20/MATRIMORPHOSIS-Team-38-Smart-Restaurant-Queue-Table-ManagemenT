@@ -69,7 +69,6 @@
   text-decoration: none;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
-}
 
 .social-link:hover {
   background: linear-gradient(135deg, #D4AF37 0%, #F4D03F 100%);

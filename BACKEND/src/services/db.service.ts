@@ -1,23 +1,25 @@
-import Database from "better-sqlite3";
-import path from "path";
+import mysql from "mysql2/promise";
+import dotenv from "dotenv";
 
-const dbPath = path.join(process.cwd(), "restaurant.db");
-export const db = new Database(dbPath);
+dotenv.config();
 
-// Enable foreign keys
-db.pragma("foreign_keys = ON");
+// Create connection pool
+export const db = mysql.createPool({
+  host: process.env.DB_HOST || "localhost",
+  user: process.env.DB_USER || "root",
+  password: process.env.DB_PASS || "",
+  database: process.env.DB_NAME || "restaurant_db",
+  waitForConnections: true,
+  connectionLimit: 10,
+  queueLimit: 0,
+});
 
-// Export a wrapper to make it compatible with mysql2/promise interface
-export const dbQuery = (sql: string, params: any[] = []) => {
-  try {
-    const stmt = db.prepare(sql);
-    if (sql.trim().toUpperCase().startsWith("SELECT")) {
-      return [stmt.all(...params)];
-    } else {
-      const result = stmt.run(...params);
-      return [{ insertId: result.lastInsertRowid, affectedRows: result.changes }];
-    }
-  } catch (error) {
-    throw error;
-  }
-};
+// Test connection
+db.getConnection()
+  .then((conn) => {
+    console.log("✅ Connected to MySQL database");
+    conn.release();
+  })
+  .catch((err) => {
+    console.error("❌ Failed to connect to MySQL:", err.message);
+  });

@@ -7,6 +7,7 @@ import { db } from "./services/db.service";
 import userRoutes from "./routes/user.routes";
 import tableRoutes from "./routes/table.routes";
 import queueRoutes from "./routes/queue.routes";
+import tableButtonRoutes from "./routes/tableButton.routes";
 import { errorHandler } from "./middlewares/error.middleware";
 
 
@@ -21,6 +22,7 @@ app.use(express.json());
 app.use("/api/users", userRoutes);
 app.use("/api/tables", tableRoutes);
 app.use("/api/queue", queueRoutes);
+app.use("/api/table", tableButtonRoutes);
 
 // Health check route
 app.get("/", (req, res) => {

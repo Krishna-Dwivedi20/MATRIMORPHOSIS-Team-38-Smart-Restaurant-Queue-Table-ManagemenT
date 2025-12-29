@@ -1,86 +1,61 @@
-import Database from "better-sqlite3";
+import mysql from "mysql2/promise";
+import fs from "fs";
 import path from "path";
+import dotenv from "dotenv";
 
-const dbPath = path.join(process.cwd(), "restaurant.db");
+dotenv.config();
 
-// Create/open database
-const db = new Database(dbPath);
+async function initializeDatabase() {
+  let connection: mysql.Connection | null = null;
 
-// Enable foreign keys
-db.pragma("foreign_keys = ON");
+  try {
+    // First, create connection without database to create it if it doesn't exist
+    connection = await mysql.createConnection({
+      host: process.env.DB_HOST || "localhost",
+      user: process.env.DB_USER || "root",
+      password: process.env.DB_PASS || "",
+    });
 
-console.log("Initializing SQLite database...");
+    console.log("✓ Connected to MySQL server");
 
-// Create tables
-db.exec(`
-  -- Users table
-  CREATE TABLE IF NOT EXISTS users (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    name TEXT NOT NULL,
-    email TEXT UNIQUE,
-    phone TEXT,
-    role TEXT DEFAULT 'USER',
-    contact_info TEXT,
-    created_at DATETIME DEFAULT CURRENT_TIMESTAMP
-  );
+    // Create database if not exists
+    const dbName = process.env.DB_NAME || "restaurant_db";
+    await connection.query(`CREATE DATABASE IF NOT EXISTS ${dbName}`);
+    console.log(`✓ Database '${dbName}' ready`);
 
-  -- Tables reservations table
-  CREATE TABLE IF NOT EXISTS tables_reservations (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    table_number INTEGER NOT NULL UNIQUE,
-    capacity INTEGER NOT NULL,
-    type TEXT DEFAULT 'REGULAR',
-    status TEXT DEFAULT 'AVAILABLE',
-    current_customer_id INTEGER,
-    reservation_time DATETIME,
-    created_at DATETIME DEFAULT CURRENT_TIMESTAMP
-  );
+    // Switch to the database
+    await connection.changeUser({ database: dbName });
 
-  -- Queue table
-  CREATE TABLE IF NOT EXISTS queue (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    user_id INTEGER,
-    user_name TEXT,
-    party_size INTEGER NOT NULL,
-    phone TEXT,
-    status TEXT DEFAULT 'WAITING',
-    estimated_time INTEGER,
-    position INTEGER,
-    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE SET NULL
-  );
-`);
+    // Read SQL file
+    const sqlFile = path.join(process.cwd(), "database.sql");
+    const sql = fs.readFileSync(sqlFile, "utf8");
 
-// Insert sample data if tables are empty
-const tableCount = db.prepare("SELECT COUNT(*) as count FROM tables_reservations").get() as any;
-const userCount = db.prepare("SELECT COUNT(*) as count FROM users").get() as any;
+    // Split SQL into individual statements and execute
+    const statements = sql
+      .split(";")
+      .map((stmt) => stmt.trim())
+      .filter((stmt) => stmt.length > 0 && !stmt.startsWith("--"));
 
-if (tableCount.count === 0) {
-  console.log("Inserting sample tables...");
-  const insertTable = db.prepare(
-    "INSERT INTO tables_reservations (table_number, capacity, type, status) VALUES (?, ?, ?, ?)"
-  );
-  
-  insertTable.run(1, 2, "REGULAR", "AVAILABLE");
-  insertTable.run(2, 2, "REGULAR", "AVAILABLE");
-  insertTable.run(3, 4, "REGULAR", "AVAILABLE");
-  insertTable.run(4, 4, "REGULAR", "RESERVED");
-  insertTable.run(5, 6, "LARGE", "AVAILABLE");
-  insertTable.run(6, 8, "LARGE", "OCCUPIED");
+    for (const statement of statements) {
+      try {
+        await connection.query(statement);
+        console.log("✓ Executed:", statement.substring(0, 60) + "...");
+      } catch (err: any) {
+        console.error("Error executing statement:", statement.substring(0, 60));
+        console.error(err.message);
+      }
+    }
+
+    await connection.end();
+    console.log("\n✅ MySQL database initialized successfully!");
+  } catch (error: any) {
+    console.error("❌ Error initializing database:", error.message);
+    console.error("Full error:", error);
+    if (connection) {
+      await connection.end();
+    }
+    process.exit(1);
+  }
 }
 
-if (userCount.count === 0) {
-  console.log("Inserting sample users...");
-  const insertUser = db.prepare(
-    "INSERT INTO users (name, email, phone, role) VALUES (?, ?, ?, ?)"
-  );
-  
-  insertUser.run("John Doe", "john@example.com", "555-0101", "USER");
-  insertUser.run("Jane Smith", "jane@example.com", "555-0102", "MANAGER");
-  insertUser.run("Admin User", "admin@example.com", "555-0103", "ADMIN");
-}
-
-console.log("✅ SQLite database initialized successfully!");
-console.log(`📁 Database location: ${dbPath}`);
-
-db.close();
+initializeDatabase();

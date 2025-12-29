@@ -148,7 +148,9 @@ mat-toolbar {
 .mat-mdc-button, .mat-mdc-raised-button {
   border-radius: 10px !important;
   font-weight: 600 !important;
-  letter-spacing: 0.5px
+  letter-spacing: 0.5px;
+}
+
 .mat-mdc-raised-button.mat-accent {
   background-color: var(--brand-accent) !important;
 }
